@@ -1,16 +1,30 @@
-## Hi there 👋
+name: Generate Snake Animation
 
-<!--
-**MayraAugusra/MayraAugusra** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
 
-Here are some ideas to get you started:
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate Snake
+        uses: Platane/snk@v3
+        with:
+          github_user_name: MAYRAAUGUSTA
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      - name: Push Snake Animation to the output branch
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
